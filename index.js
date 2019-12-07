@@ -26,6 +26,7 @@ function collectInfo(){
     let btn = document.getElementById('add-book');
     btn.onclick = function (){
         addBookToLibrary();
+        closeModal();
         render();
     }
 }
@@ -33,23 +34,30 @@ function collectInfo(){
 
 // display library in the DOM
 function render(){
-    let tableBody = document.getElementById('table');
-    let html = '';
+    let tableBody2 = document.getElementsByTagName('table')[0];
+    let newRow = tableBody2.insertRow(1);
+
+    let cell1 = newRow.insertCell(0);
+    let cell2 = newRow.insertCell(1);
+    let cell3 = newRow.insertCell(2);
+    let cell4 = newRow.insertCell(3);
+    let cell5 = newRow.insertCell(4);
+
 
     for(let i=0; i<myLibrary.length; i++){
-    
-        html += '<tr>'
-        html += '<td>' + myLibrary[i].title  + '</td>'
-        html += '<td>' + myLibrary[i].author  + '</td>'
-        html += '<td>' + myLibrary[i].pages  + '</td>'
-        html += '<td>' + myLibrary[i].read  + '</td>'
-        html += '</tr>'
+
+
+        cell1.innerHTML = myLibrary[i].title;
+        cell2.innerHTML = myLibrary[i].author;
+        cell3.innerHTML = myLibrary[i].pages;
+        cell4.innerHTML = myLibrary[i].read;
+        cell5.innerHTML = '<button class="button is-light"> Delete </button>';   
+
 
 }
 
-tableBody.innerHTML = html;
-
 }
+
 
 
 // handle form data collection
