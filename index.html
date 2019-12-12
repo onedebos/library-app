@@ -8,6 +8,10 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"
     />
+    <link
+    rel="stylesheet"
+    href="styles.css"
+  />
     <script
       defer
       src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
@@ -27,9 +31,11 @@
       </div>
     </section>
 
-    <section class="container books">
-      <div class="is-fluid has-text-centered">
-        <table class="table is-striped is-narrow is-hoverable">
+    <section class="section">
+      <div class="container">
+        <h2 class="has-text-left is-library-empty">There are currently no books in your libary. </h2>
+        <p class="has-text-left is-library-empty">Click the <strong>Add book</strong> button to get started. </p>
+        <table class="table is-striped is-narrow is-hoverable" id="main-table">
           <thead>
             <th>Title</th>
             <th>Author</th>
@@ -39,82 +45,90 @@
           </thead>
           <tbody id="table"></tbody>
         </table>
+
+        <button class="button is-normal is-warning" id="show-modal">Add book</button>
       </div>
-      <section class="container">
-        <button class="button is-warning" id="show-modal">Add book</button>
-      </section>
     </section>
-    <section class="container is-light">
+
+
+    <!-- Form for adding new books to table -->
+    
       <div class="modal" id="modal">
-        <div class="modal-background">is-warning</div>
-        <div class="modal-content">
-          <div class="field">
-            <label class="label">Book title</label>
-            <div class="control">
-              <input
-                class="input"
-                id="title"
-                type="text"
-                placeholder="Book title"
-              />
-            </div>
-          </div>
-          <div class="field">
-            <label class="label">Author</label>
-            <div class="control">
-              <input
-                class="input"
-                id="author"
-                type="text"
-                placeholder="Written by?"
-              />
-            </div>
-          </div>
-          <div class="field">
-            <label class="label">Number of Pages</label>
-            <div class="control">
-              <input
-                class="input"
-                id="pages"
-                type="number"
-                placeholder="How many pages in this book?"
-              />
-            </div>
-          </div>
+        <div class="modal-background"></div>
+        <div class="modal-content ">
+          <div class="box">
+            <h2 class="title is-5">
+             Let's add some books to your library! 
+            </h2>
+              <div class="field">
+                  <label class="label">Book title</label>
+                  <div class="control">
+                    <input
+                      class="input"
+                      id="title"
+                      type="text"
+                      placeholder="Book title" required
+                    />
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Author</label>
+                  <div class="control">
+                    <input
+                      class="input"
+                      id="author"
+                      type="text"
+                      placeholder="Written by?"
+                    />
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Number of Pages</label>
+                  <div class="control">
+                    <input
+                      class="input"
+                      id="pages"
+                      type="number"
+                      placeholder="How many pages in this book?"
+                    />
+                  </div>
+                </div>
+      
+                <div class="field">
+                  <label class="label">Have you read this book?</label>
+                  <div class="control">
+                    <div class="select">
+                      <select id="read">
 
-          <div class="field">
-            <label class="label">Have you read this book?</label>
-            <div class="control">
-              <div class="select">
-                <select id="read">
-                  <option value="0">Select</option>
-                  <option value="1">Yes</option>
-                  <option value="2">No</option>
-                </select>
+                        <option value="1">Read</option>
+                        <option value="2">Not read</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+      
+                <div class="field is-grouped">
+                  <div class="control">
+                    <button class="button is-warning" id="add-book">
+                      Add to library
+                    </button>
+                  </div>
+                  <div class="control">
+                    <button class="button is-dark is-light" id="cancel">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
               </div>
+              <button
+                class="modal-close is-large"
+                aria-label="close"
+                id="modal-close"
+              ></button>
             </div>
           </div>
+          
 
-          <div class="field is-grouped">
-            <div class="control">
-              <button class="button is-link" id="add-book">
-                Add to library
-              </button>
-            </div>
-            <div class="control">
-              <button class="button is-link is-light" id="cancel">
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-        <button
-          class="modal-close is-large"
-          aria-label="close"
-          id="modal-close"
-        ></button>
-      </div>
-    </section>
     <script src="index.js"></script>
   </body>
 </html>
