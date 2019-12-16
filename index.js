@@ -18,50 +18,72 @@ function addBookToLibrary() {
   const pages = document.getElementById("pages").value;
   const option = document.getElementById("read");
   const read = option.options[option.selectedIndex].text;
-  const bookID = myLibrary.length + 1;
+  const bookID = myLibrary.length;
 
-  const book1 = new Book(author, title, pages, read, bookID);
-  myLibrary.push(book1);
+  if (author == "" || title == "" || pages == "") {
+    showAlert("Please fill all fields", "danger");
+  } else {
+    // showAlert("You have added a new book to your library ", "success");
+    const book1 = new Book(author, title, pages, read, bookID);
+    myLibrary.push(book1);
+    return true;
+  }
+}
+
+//validation
+function showAlert(message, className) {
+  const div = document.createElement("div");
+
+  if(className == 'danger'){
+    div.className = `notification is-${className} error`;
+    div.appendChild(document.createTextNode(message));    
+    const container = document.querySelector(".box");
+    const formHeading = document.querySelector(".form-header");
+    container.insertBefore(div, formHeading);
+  
+  }else{
+    const container = document.querySelector(".messages");
+    container.appendChild(div);
+    // container.insertBefore(div, formHeading);
+  }
+ 
+  //dissapear after 2s
+  setTimeout(() => document.querySelector('.notifcation').remove(), 2000);
 }
 
 // handle add to library button
 function collectInfo() {
   const btn = document.getElementById("add-book");
   btn.onclick = function() {
-    addBookToLibrary();
-    closeModal();
-    render();
-    showTable();
-    resetTable();
-    deleteBookFromLibrary();
+    if (addBookToLibrary()) {
+      closeModal();
+      render();
+      showTable();
+      resetTable();
+    }
   };
 }
 
 // display library in the DOM
 function render() {
-  let tableBody2 = document.getElementsByTagName("table")[0];
-  let newRow = tableBody2.insertRow(1);
-
-  let cell1 = newRow.insertCell(0);
-  let cell2 = newRow.insertCell(1);
-  let cell3 = newRow.insertCell(2);
-  let cell4 = newRow.insertCell(3);
-  let cell5 = newRow.insertCell(4);
+  const list = document.querySelector("#table");
+  const row = document.createElement("tr");
 
   for (let i = 0; i < myLibrary.length; i++) {
-    newRow.setAttribute("data-book-id", i);
-
-    cell1.innerHTML = myLibrary[i].title;
-    cell2.innerHTML = myLibrary[i].author;
-    cell3.innerHTML = myLibrary[i].pages;
-    cell4.innerHTML =
-      '<button class="button is-dark is-small read-status">' +
-      myLibrary[i].read +
-      "</button>";
-    console.log(myLibrary[i].bookID);
-    cell5.innerHTML =
-      '<button class="button is-danger is-small remove-book"> Remove from library </button>';
+    row.setAttribute("data-book-id", i);
+    row.innerHTML = `<td>${myLibrary[i].title}</td>
+            <td>${myLibrary[i].author}</td>
+            <td>${myLibrary[i].pages}</td>
+            <td><button class="button is-dark is-small read-status">
+            ${myLibrary[i].read}
+            </button></td>
+            <td><button class="button is-danger is-small remove-book" id="remove-btn-${myLibrary[i].bookID}"> 
+            Remove from Library
+            </button></td>
+            `;
   }
+
+  list.appendChild(row);
 }
 
 function isLibraryEmpty() {
@@ -80,13 +102,21 @@ function showTable() {
   }
 }
 
-function removeBook() {
-  const nonDeletedBooks = myLibrary.filter(function(book) {
-    book.id !== bookID;
+function removeBk() {
+  document.querySelector("#table").addEventListener("click", e => {
+    deleteBookFromLibrary(e.target);
   });
 }
 
-function deleteBookFromLibrary(bookId) {}
+function deleteBookFromLibrary(el) {
+  if (el.classList.contains("remove-book")) {
+    const index = el.parentElement.parentElement.getAttribute("data-book-id");
+    myLibrary.splice(myLibrary.indexOf[index], 1);
+    el.parentElement.parentElement.remove();
+  }
+
+  showAlert('Book removed from library', 'warning');
+}
 
 function toggleBookStatus() {
   let index = event.target.parentElement.parentElement.getAttribute(
@@ -108,6 +138,9 @@ function resetTable() {
   for (let i = 0; i < fieldsToClear.length; i++) {
     fieldsToClear[i].value = "";
   }
+
+  document.querySelector(".error").style.display = "none";
+  
 }
 
 // handle form data collection
@@ -133,3 +166,4 @@ cancelBtn.onclick = function() {
 // call functions
 collectInfo();
 isLibraryEmpty();
+removeBk();
