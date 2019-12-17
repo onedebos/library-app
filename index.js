@@ -23,7 +23,7 @@ function addBookToLibrary() {
   if (author == "" || title == "" || pages == "") {
     showAlert("Please fill all fields", "danger");
   } else {
-    // showAlert("You have added a new book to your library ", "success");
+    showAlert("You have added a new book to your library ", "success");
     const book1 = new Book(author, title, pages, read, bookID);
     myLibrary.push(book1);
     return true;
@@ -40,15 +40,19 @@ function showAlert(message, className) {
     const container = document.querySelector(".box");
     const formHeading = document.querySelector(".form-header");
     container.insertBefore(div, formHeading);
+    setTimeout(() => document.querySelector('.error').remove(), 3000);
   
   }else{
-    const container = document.querySelector(".messages");
-    container.appendChild(div);
-    // container.insertBefore(div, formHeading);
+     const showMsg = document.createElement('p');
+     showMsg.className = `notification is-${className} added`;
+     showMsg.appendChild(document.createTextNode(message));
+     document.querySelector(".show-notification").appendChild(showMsg);
+      //dissapear after 3s
+     setTimeout(() => document.querySelector('.added').remove(), 3000);
   }
  
-  //dissapear after 2s
-  setTimeout(() => document.querySelector('.notifcation').remove(), 2000);
+
+  
 }
 
 // handle add to library button
@@ -111,11 +115,12 @@ function removeBk() {
 function deleteBookFromLibrary(el) {
   if (el.classList.contains("remove-book")) {
     const index = el.parentElement.parentElement.getAttribute("data-book-id");
+    
     myLibrary.splice(myLibrary.indexOf[index], 1);
     el.parentElement.parentElement.remove();
+    
   }
-
-  showAlert('Book removed from library', 'warning');
+  showAlert(`Book removed from library`, 'warning');
 }
 
 function toggleBookStatus() {
